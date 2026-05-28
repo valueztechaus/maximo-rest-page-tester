@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maximo REST Page Tester · Valueztech</title>
+  <link rel="icon" type="image/png" href="assets/logos/valueztech-gear-icon.png">
+  <style>
+    :root {
+      --vt-primary: #1e5a8e;
+      --vt-primary-700: #174870;
+      --vt-light-blue: #2d7ab8;
+      --vt-gold: #e8b443;
+      --vt-text-gray: #666666;
+      --vt-near-black: #1a1a1a;
+      --vt-off-white: #f5f7fa;
+      --vt-white: #ffffff;
+      --vt-border: #e1e5ea;
+      --vt-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --vt-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --vt-radius-sm: 4px;
+      --vt-radius: 8px;
+      --vt-shadow-sm: 0 1px 2px rgba(30, 90, 142, 0.06);
+      --vt-shadow: 0 4px 12px rgba(30, 90, 142, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      color: var(--vt-near-black);
+      background: var(--vt-off-white);
+      font-family: var(--vt-font-sans);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    .masthead {
+      background: linear-gradient(135deg, var(--vt-primary) 0%, var(--vt-light-blue) 100%);
+      color: var(--vt-white);
+      padding: 24px clamp(18px, 4vw, 44px) 34px;
+    }
+
+    .masthead__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+      flex-wrap: wrap;
+      max-width: 1360px;
+      margin: 0 auto 30px;
+    }
+
+    .brand-plate {
+      display: inline-flex;
+      align-items: center;
+      background: var(--vt-white);
+      border-radius: var(--vt-radius);
+      padding: 14px 18px;
+      box-shadow: var(--vt-shadow-sm);
+    }
+
+    .vz-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .vz-logo__gear,
+    .vz-logo__wordmark {
+      display: block;
+      height: 68px;
+      width: auto;
+    }
+
+    .masthead__meta {
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .hero {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+      gap: 36px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      color: var(--vt-gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      color: var(--vt-white);
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      line-height: 1.08;
+      margin: 0;
+      max-width: 980px;
+    }
+
+    .hero__lead {
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 1.08rem;
+      line-height: 1.65;
+      margin: 20px 0 0;
+      max-width: 780px;
+    }
+
+    .origin-panel {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: var(--vt-radius);
+      padding: 18px;
+    }
+
+    .origin-panel h2 {
+      color: var(--vt-white);
+      font-size: 1rem;
+      margin: 0 0 10px;
+    }
+
+    .origin-panel p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    main {
+      max-width: 1360px;
+      margin: -18px auto 0;
+      padding: 0 clamp(18px, 4vw, 44px) 42px;
+      position: relative;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(340px, 0.86fr) minmax(0, 1.14fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--vt-white);
+      border: 1px solid var(--vt-border);
+      border-radius: var(--vt-radius);
+      box-shadow: var(--vt-shadow-sm);
+      padding: 22px;
+    }
+
+    .card h2 {
+      color: var(--vt-primary);
+      font-size: 1.18rem;
+      margin: 0 0 14px;
+    }
+
+    .card p {
+      color: var(--vt-text-gray);
+      line-height: 1.55;
+      margin: 0 0 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field--wide {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: var(--vt-near-black);
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--vt-border);
+      border-radius: var(--vt-radius-sm);
+      color: var(--vt-near-black);
+      background: var(--vt-white);
+      padding: 11px 12px;
+      line-height: 1.45;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+      font-family: var(--vt-font-mono);
+      font-size: 0.88rem;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--vt-light-blue);
+      box-shadow: 0 0 0 3px rgba(45, 122, 184, 0.16);
+    }
+
+    .hint {
+      color: var(--vt-text-gray);
+      font-size: 0.82rem;
+      line-height: 1.45;
+      margin: 7px 0 0;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .btn {
+      align-items: center;
+      border: 0;
+      border-radius: var(--vt-radius);
+      cursor: pointer;
+      display: inline-flex;
+      font-size: 0.93rem;
+      font-weight: 700;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 16px;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn--primary {
+      background: var(--vt-primary);
+      color: var(--vt-white);
+    }
+
+    .btn--primary:hover { background: var(--vt-primary-700); }
+
+    .btn--gold {
+      background: var(--vt-gold);
+      color: var(--vt-near-black);
+    }
+
+    .btn--outline {
+      background: var(--vt-white);
+      border: 1px solid var(--vt-primary);
+      color: var(--vt-primary);
+    }
+
+    .btn:disabled {
+      background: var(--vt-border);
+      border-color: var(--vt-border);
+      color: var(--vt-text-gray);
+      cursor: not-allowed;
+    }
+
+    .status {
+      border: 1px solid var(--vt-border);
+      border-left: 5px solid var(--vt-light-blue);
+      border-radius: var(--vt-radius);
+      color: var(--vt-near-black);
+      line-height: 1.5;
+      margin-top: 16px;
+      min-height: 58px;
+      padding: 13px 14px;
+      white-space: pre-wrap;
+    }
+
+    .status--ok { border-left-color: var(--vt-light-blue); background: var(--vt-off-white); }
+    .status--warn { border-left-color: var(--vt-gold); background: var(--vt-white); }
+    .status--error { border-left-color: var(--vt-primary); background: var(--vt-off-white); }
+
+    .diagnostics {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .diagnostic {
+      border: 1px solid var(--vt-border);
+      border-left: 4px solid var(--vt-gold);
+      border-radius: var(--vt-radius);
+      padding: 12px;
+      background: var(--vt-white);
+    }
+
+    .diagnostic strong {
+      color: var(--vt-primary);
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .diagnostic span {
+      color: var(--vt-text-gray);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .output-head {
+      align-items: center;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .output-head h2 {
+      margin: 0;
+    }
+
+    pre {
+      background: var(--vt-near-black);
+      border-radius: var(--vt-radius);
+      color: var(--vt-white);
+      font-family: var(--vt-font-mono);
+      font-size: 0.84rem;
+      line-height: 1.55;
+      margin: 0;
+      max-height: 590px;
+      overflow: auto;
+      padding: 15px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .metric {
+      background: var(--vt-off-white);
+      border: 1px solid var(--vt-border);
+      border-radius: var(--vt-radius);
+      padding: 14px;
+    }
+
+    .metric b {
+      color: var(--vt-primary);
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .metric span {
+      color: var(--vt-near-black);
+      font-family: var(--vt-font-mono);
+      font-size: 0.86rem;
+      word-break: break-word;
+    }
+
+    .history {
+      display: grid;
+      gap: 10px;
+      max-height: 420px;
+      overflow: auto;
+    }
+
+    .history-item {
+      border: 1px solid var(--vt-border);
+      border-radius: var(--vt-radius);
+      padding: 12px;
+      background: var(--vt-white);
+    }
+
+    .history-item__top {
+      display: flex;
+      gap: 8px;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .pill {
+      background: var(--vt-off-white);
+      border: 1px solid var(--vt-border);
+      border-radius: 999px;
+      color: var(--vt-primary);
+      display: inline-flex;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      white-space: nowrap;
+    }
+
+    .history-item code {
+      color: var(--vt-text-gray);
+      display: block;
+      font-family: var(--vt-font-mono);
+      font-size: 0.78rem;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .guide {
+      background: var(--vt-white);
+      border: 1px solid var(--vt-border);
+      border-top: 4px solid var(--vt-gold);
+      border-radius: var(--vt-radius);
+      padding: 16px;
+    }
+
+    .guide h3 {
+      color: var(--vt-primary);
+      font-size: 1rem;
+      margin: 0 0 8px;
+    }
+
+    .guide p {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .recognitions {
+      align-items: center;
+      background: var(--vt-off-white);
+      border-top: 1px solid var(--vt-border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: space-between;
+      padding: 22px clamp(18px, 4vw, 44px);
+    }
+
+    .recognitions__inner {
+      align-items: center;
+      display: flex;
+      gap: 18px;
+      justify-content: space-between;
+      margin: 0 auto;
+      max-width: 1360px;
+      width: 100%;
+    }
+
+    .recognitions__label {
+      color: var(--vt-primary);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .recognitions__marks {
+      align-items: center;
+      display: flex;
+      gap: 16px;
+    }
+
+    .recognitions__marks img {
+      display: block;
+      height: 48px;
+      width: auto;
+    }
+
+    footer {
+      background: var(--vt-white);
+      border-top: 1px solid var(--vt-border);
+      color: var(--vt-text-gray);
+      font-size: 0.88rem;
+      padding: 22px clamp(18px, 4vw, 44px);
+      text-align: center;
+    }
+
+    footer a {
+      color: var(--vt-primary);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    @media (max-width: 1080px) {
+      .hero,
+      .grid,
+      .guide-grid {
+        grid-template-columns: 1fr;
+      }
+
+      main { margin-top: 0; padding-top: 22px; }
+    }
+
+    @media (max-width: 720px) {
+      .vz-logo { gap: 12px; }
+      .vz-logo__gear, .vz-logo__wordmark { height: 50px; }
+      .masthead__meta { text-align: left; }
+      .form-grid, .meta-grid { grid-template-columns: 1fr; }
+      .recognitions__inner { align-items: flex-start; flex-direction: column; }
+      .recognitions__marks img { height: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead__top">
+      <div class="brand-plate" aria-label="Valueztech">
+        <div class="vz-logo">
+          <img src="assets/logos/valueztech-gear-icon.png" alt="" class="vz-logo__gear">
+          <img src="assets/logos/valueztech-wordmark.png" alt="Valueztech - Maximising Asset Intelligence" class="vz-logo__wordmark">
+        </div>
+      </div>
+      <div class="masthead__meta">Free static tester for IBM Maximo REST and OSLC pagination</div>
+    </div>
+
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Maximo REST / OSLC diagnostic tool</p>
+        <h1 id="page-title">Test next-page behaviour without installing a client.</h1>
+        <p class="hero__lead">
+          Paste a Maximo GET URL, call the first page, inspect the returned JSON, and continue with either Maximo's
+          returned nextPage href or generated pageno values for repeatable issue replication.
+        </p>
+      </div>
+      <aside class="origin-panel">
+        <h2>Current browser origin</h2>
+        <p id="originText">Detecting origin...</p>
+      </aside>
+    </section>
+  </header>
+
+  <main>
+    <section class="grid" aria-label="Tester workspace">
+      <div class="stack">
+        <section class="card" aria-labelledby="request-title">
+          <h2 id="request-title">Request</h2>
+          <div class="field">
+            <label for="urlInput">Maximo REST GET URL</label>
+            <textarea id="urlInput" placeholder="https://host/maximo/api/os/MXAPIASSET?lean=1&oslc.pageSize=100&pageno=1"></textarea>
+            <p class="hint">Use a fresh first-page URL when testing stable pagination. Old returned nextPage links can expire.</p>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="authMode">Auth header mode</label>
+              <select id="authMode">
+                <option value="none">None - browser cookies/session only</option>
+                <option value="apikey">apikey header: value - requires CORS allow-header apikey</option>
+                <option value="maxauth">maxauth: value</option>
+                <option value="bearer">Authorization: Bearer value</option>
+                <option value="basic">Authorization: Basic base64-value</option>
+              </select>
+              <p class="hint">If Maximo only accepts API keys as a query parameter, use <code>?apikey=...</code> in the URL and keep this as None.</p>
+            </div>
+            <div class="field">
+              <label for="secretInput">API key or token</label>
+              <input id="secretInput" type="password" autocomplete="off" placeholder="Optional. Never saved by this page.">
+            </div>
+            <div class="field">
+              <label for="credentialsMode">Cookie credentials</label>
+              <select id="credentialsMode">
+                <option value="include">Include browser cookies/session</option>
+                <option value="omit">Do not send cookies</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="pagingMode">Next page strategy</label>
+              <select id="pagingMode">
+                <option value="returned">Use Maximo returned nextPage href</option>
+                <option value="pageno">Generate pageno=2, 3, 4...</option>
+              </select>
+            </div>
+            <div class="field field--wide">
+              <label for="extraHeaders">Extra headers as JSON</label>
+              <textarea id="extraHeaders">{"Accept":"application/json"}</textarea>
+            </div>
+            <div class="field">
+              <label for="nextPathInput">Next page JSON path</label>
+              <input id="nextPathInput" value="responseInfo.nextPage.href" placeholder="responseInfo.nextPage.href">
+              <p class="hint">The tool also searches common OSLC next fields if this path does not match.</p>
+            </div>
+            <div class="field">
+              <label for="pageParamInput">Page number parameter</label>
+              <input id="pageParamInput" value="pageno" placeholder="pageno">
+              <p class="hint">Used only by generated pageno mode.</p>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <button class="btn btn--primary" id="callBtn" type="button">Call URL</button>
+            <button class="btn btn--gold" id="nextBtn" type="button" disabled>Next Page</button>
+            <button class="btn btn--outline" id="copyNextBtn" type="button" disabled>Copy Next URL</button>
+            <button class="btn btn--outline" id="copyCurlBtn" type="button" disabled>Copy cURL</button>
+            <button class="btn btn--outline" id="clearBtn" type="button">Clear</button>
+          </div>
+
+          <div class="status status--warn" id="status">Ready. Paste a Maximo GET URL and click Call URL.</div>
+          <div class="diagnostics" id="diagnostics" aria-live="polite"></div>
+        </section>
+
+        <section class="card" aria-labelledby="guide-title">
+          <h2 id="guide-title">Hosting and CORS Guide</h2>
+          <div class="guide-grid">
+            <article class="guide">
+              <h3>Localhost</h3>
+              <p>Run <code>py -m http.server 8080</code> from this folder on Windows, then open <code>http://localhost:8080/</code>. Maximo must allow that origin.</p>
+            </article>
+            <article class="guide">
+              <h3>Free static host</h3>
+              <p>GitHub Pages, Cloudflare Pages, Netlify, and Vercel can host these files free. Add the published site origin to allowed CORS origins.</p>
+            </article>
+            <article class="guide">
+              <h3>Proxy option</h3>
+              <p>If CORS cannot be changed, place a controlled local or server-side proxy between the browser and Maximo. Do not expose secrets in public proxies.</p>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <div class="stack">
+        <section class="card" aria-labelledby="info-title">
+          <h2 id="info-title">Current Page Info</h2>
+          <div class="meta-grid">
+            <div class="metric">
+              <b>HTTP status</b>
+              <span id="httpStatus">No request yet.</span>
+            </div>
+            <div class="metric">
+              <b>Elapsed</b>
+              <span id="elapsedTime">No request yet.</span>
+            </div>
+            <div class="metric">
+              <b>Page counter</b>
+              <span id="pageCounter">0</span>
+            </div>
+            <div class="metric">
+              <b>Records detected</b>
+              <span id="recordCount">Unknown</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="urls-title">
+          <div class="output-head">
+            <h2 id="urls-title">URLs</h2>
+          </div>
+          <p><strong>Last called URL</strong></p>
+          <pre id="lastUrl">No request yet.</pre>
+          <p><strong>Next URL</strong></p>
+          <pre id="nextUrl">No next page detected yet.</pre>
+        </section>
+
+        <section class="card" aria-labelledby="response-title">
+          <div class="output-head">
+            <h2 id="response-title">Response JSON</h2>
+            <button class="btn btn--outline" id="downloadBtn" type="button" disabled>Download JSON</button>
+          </div>
+          <pre id="responseOutput">No response yet.</pre>
+        </section>
+
+        <section class="card" aria-labelledby="history-title">
+          <h2 id="history-title">Request History</h2>
+          <div class="history" id="history">No requests yet.</div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <section class="recognitions" aria-label="Recognitions and partnerships">
+    <div class="recognitions__inner">
+      <div class="recognitions__label">Recognitions &amp; Partnerships</div>
+      <div class="recognitions__marks">
+        <img src="assets/logos/ibm-silver-partner-web.jpg" alt="IBM Silver Partner">
+        <img src="assets/logos/ibm-champion-2026.png" alt="IBM Champion 2026">
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Valueztech Pty Ltd · ABN 81 677 255 300 · <a href="https://www.valueztech.com">www.valueztech.com</a> · Melbourne, Australia
+  </footer>
+
+  <script>
+    const els = {
+      urlInput: document.getElementById('urlInput'),
+      authMode: document.getElementById('authMode'),
+      secretInput: document.getElementById('secretInput'),
+      credentialsMode: document.getElementById('credentialsMode'),
+      pagingMode: document.getElementById('pagingMode'),
+      extraHeaders: document.getElementById('extraHeaders'),
+      nextPathInput: document.getElementById('nextPathInput'),
+      pageParamInput: document.getElementById('pageParamInput'),
+      callBtn: document.getElementById('callBtn'),
+      nextBtn: document.getElementById('nextBtn'),
+      copyNextBtn: document.getElementById('copyNextBtn'),
+      copyCurlBtn: document.getElementById('copyCurlBtn'),
+      clearBtn: document.getElementById('clearBtn'),
+      downloadBtn: document.getElementById('downloadBtn'),
+      status: document.getElementById('status'),
+      diagnostics: document.getElementById('diagnostics'),
+      httpStatus: document.getElementById('httpStatus'),
+      elapsedTime: document.getElementById('elapsedTime'),
+      pageCounter: document.getElementById('pageCounter'),
+      recordCount: document.getElementById('recordCount'),
+      lastUrl: document.getElementById('lastUrl'),
+      nextUrl: document.getElementById('nextUrl'),
+      responseOutput: document.getElementById('responseOutput'),
+      history: document.getElementById('history'),
+      originText: document.getElementById('originText')
+    };
+
+    const state = {
+      currentNextUrl: '',
+      lastCalledUrl: '',
+      lastResponseText: '',
+      lastJson: null,
+      requestCount: 0,
+      generatedPageNumber: null
+    };
+
+    init();
+
+    function init() {
+      els.originText.textContent = getOriginText();
+      els.callBtn.addEventListener('click', () => callMaximoUrl(els.urlInput.value, false));
+      els.nextBtn.addEventListener('click', callNextPage);
+      els.copyNextBtn.addEventListener('click', () => copyText(state.currentNextUrl, 'Next page URL copied to clipboard.'));
+      els.copyCurlBtn.addEventListener('click', () => copyText(buildCurlCommand(state.lastCalledUrl), 'cURL command copied to clipboard. Treat it as sensitive if it includes auth headers.'));
+      els.downloadBtn.addEventListener('click', downloadJson);
+      els.clearBtn.addEventListener('click', clearAll);
+      els.pagingMode.addEventListener('change', updateNextStrategy);
+      els.authMode.addEventListener('change', updateAuthGuidance);
+      window.addEventListener('unhandledrejection', event => {
+        setStatus('Unexpected browser error: ' + event.reason, 'error');
+      });
+      updateAuthGuidance();
+    }
+
+    function getOriginText() {
+      if (window.location.protocol === 'file:') {
+        return 'This page is running from file://, so browser requests usually have origin "null". Use localhost or a static host for realistic CORS testing.';
+      }
+      return 'This page origin is ' + window.location.origin + '. Maximo must allow this value in Access-Control-Allow-Origin.';
+    }
+
+    function setStatus(message, type) {
+      els.status.className = 'status status--' + (type || 'warn');
+      els.status.textContent = message;
+    }
+
+    function setBusy(isBusy) {
+      els.callBtn.disabled = isBusy;
+      els.nextBtn.disabled = isBusy || !canCallNext();
+      els.copyNextBtn.disabled = isBusy || !state.currentNextUrl;
+      els.copyCurlBtn.disabled = isBusy || !state.lastCalledUrl;
+      els.downloadBtn.disabled = isBusy || !state.lastResponseText;
+    }
+
+    function refreshNextButtonState() {
+      els.nextBtn.disabled = !canCallNext();
+      els.copyNextBtn.disabled = !state.currentNextUrl;
+    }
+
+    function updateAuthGuidance() {
+      if (els.authMode.value === 'apikey') {
+        addTransientDiagnostic(
+          'API key header needs CORS allow-header support',
+          'Browser requests using the apikey header trigger CORS checks. Maximo or the gateway must include apikey in Access-Control-Allow-Headers. If that is not configured, pass the key as ?apikey=... in the URL and keep Auth header mode as None.'
+        );
+      } else {
+        removeTransientDiagnostic();
+      }
+    }
+
+    function addTransientDiagnostic(title, body) {
+      removeTransientDiagnostic();
+      const item = document.createElement('div');
+      item.className = 'diagnostic';
+      item.dataset.transient = 'auth-guidance';
+      item.innerHTML = '<strong></strong><span></span>';
+      item.querySelector('strong').textContent = title;
+      item.querySelector('span').textContent = body;
+      els.diagnostics.prepend(item);
+    }
+
+    function removeTransientDiagnostic() {
+      const item = els.diagnostics.querySelector('[data-transient="auth-guidance"]');
+      if (item) item.remove();
+    }
+
+    function updateNextStrategy() {
+      if (els.pagingMode.value === 'pageno') {
+        state.currentNextUrl = buildGeneratedPageUrl(state.lastCalledUrl || els.urlInput.value, false);
+      } else if (state.lastJson && state.lastCalledUrl) {
+        const detectedNext = findNextPageUrl(state.lastJson);
+        state.currentNextUrl = detectedNext ? resolveUrlPossiblyRelative(detectedNext, state.lastCalledUrl) : '';
+      }
+      els.nextUrl.textContent = state.currentNextUrl || 'No next page URL detected.';
+      refreshNextButtonState();
+    }
+
+    function canCallNext() {
+      if (els.pagingMode.value === 'pageno') return Boolean(state.lastCalledUrl || els.urlInput.value.trim());
+      return Boolean(state.currentNextUrl);
+    }
+
+    function parseExtraHeaders() {
+      const raw = els.extraHeaders.value.trim();
+      if (!raw) return {};
+      try {
+        const parsed = JSON.parse(raw);
+        if (!parsed || Array.isArray(parsed) || typeof parsed !== 'object') {
+          throw new Error('Extra headers JSON must be an object.');
+        }
+        return parsed;
+      } catch (error) {
+        throw new Error('Extra headers must be valid JSON, for example {"Accept":"application/json"}.');
+      }
+    }
+
+    function buildHeaders() {
+      const headers = parseExtraHeaders();
+      const secret = els.secretInput.value.trim();
+      const mode = els.authMode.value;
+
+      if (secret && mode === 'apikey') headers.apikey = secret;
+      if (secret && mode === 'maxauth') headers.maxauth = secret;
+      if (secret && mode === 'bearer') headers.Authorization = 'Bearer ' + secret;
+      if (secret && mode === 'basic') headers.Authorization = 'Basic ' + secret;
+
+      return headers;
+    }
+
+    async function callMaximoUrl(urlToCall, isNextCall) {
+      const cleanUrl = urlToCall.trim();
+      if (!cleanUrl) {
+        setStatus('Please enter a Maximo GET URL.', 'error');
+        return;
+      }
+
+      setBusy(true);
+      clearDiagnostics();
+      setStatus('Calling URL...', 'warn');
+
+      const started = performance.now();
+      try {
+        const response = await fetch(cleanUrl, {
+          method: 'GET',
+          headers: buildHeaders(),
+          credentials: els.credentialsMode.value
+        });
+        const elapsed = Math.round(performance.now() - started);
+        const rawText = await response.text();
+        state.lastCalledUrl = cleanUrl;
+        state.lastResponseText = rawText;
+
+        let json = null;
+        try {
+          json = rawText ? JSON.parse(rawText) : null;
+        } catch (error) {
+          renderNonJsonResponse(response, rawText, cleanUrl, elapsed);
+          return;
+        }
+
+        state.lastJson = json;
+        state.requestCount += 1;
+        if (!isNextCall || state.generatedPageNumber === null) {
+          state.generatedPageNumber = getPageNumber(cleanUrl) || 1;
+        }
+
+        renderJsonResponse(response, json, cleanUrl, elapsed);
+      } catch (error) {
+        state.currentNextUrl = '';
+        els.responseOutput.textContent = '';
+        els.nextUrl.textContent = 'No next page detected.';
+        addDiagnostic('Request did not complete', getFetchFailureHelp(error));
+        setStatus('Request failed before a Maximo JSON response was available.\n\n' + error.message, 'error');
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    function renderNonJsonResponse(response, rawText, cleanUrl, elapsed) {
+      state.currentNextUrl = '';
+      els.responseOutput.textContent = rawText || 'No response body.';
+      els.lastUrl.textContent = cleanUrl;
+      els.nextUrl.textContent = 'Response was not JSON. Cannot detect next page.';
+      els.httpStatus.textContent = response.status + ' ' + response.statusText;
+      els.elapsedTime.textContent = elapsed + ' ms';
+      els.recordCount.textContent = 'Unknown';
+      els.pageCounter.textContent = String(state.requestCount);
+      addHistory(cleanUrl, response.status, 'Non-JSON response');
+      addDiagnostic('Non-JSON response', 'The request reached a server, but the response was not valid JSON. Check login redirects, SSO pages, proxies, and Maximo response headers.');
+      setStatus('HTTP ' + response.status + ' ' + response.statusText + '\nResponse is not valid JSON.', response.ok ? 'warn' : 'error');
+    }
+
+    function renderJsonResponse(response, json, cleanUrl, elapsed) {
+      const detectedNext = findNextPageUrl(json);
+      const generatedNext = buildGeneratedPageUrl(cleanUrl, true);
+      state.currentNextUrl = els.pagingMode.value === 'pageno'
+        ? generatedNext
+        : (detectedNext ? resolveUrlPossiblyRelative(detectedNext, cleanUrl) : '');
+
+      els.responseOutput.textContent = JSON.stringify(json, null, 2);
+      els.lastUrl.textContent = cleanUrl;
+      els.nextUrl.textContent = state.currentNextUrl || 'No next page URL detected.';
+      els.httpStatus.textContent = response.status + ' ' + response.statusText;
+      els.elapsedTime.textContent = elapsed + ' ms';
+      els.pageCounter.textContent = String(state.requestCount);
+      els.recordCount.textContent = String(countRecords(json));
+
+      const diagnosis = diagnoseMaximoJson(json);
+      if (diagnosis) addDiagnostic(diagnosis.title, diagnosis.body);
+
+      if (els.pagingMode.value === 'pageno' && generatedNext && detectedNext) {
+        addDiagnostic('Generated page mode is active', 'Maximo returned a nextPage href, but this tester will call the next pageno value instead. Switch strategy to test stable nextPage behaviour directly.');
+      }
+
+      addHistory(cleanUrl, response.status, state.currentNextUrl || 'No next page detected');
+      const nextLine = state.currentNextUrl ? 'Next page URL is ready.' : 'No next page URL detected.';
+      setStatus('HTTP ' + response.status + ' ' + response.statusText + '\n' + nextLine, response.ok ? 'ok' : 'warn');
+    }
+
+    function getByPath(object, path) {
+      if (!path) return undefined;
+      return path.split('.').reduce((value, key) => {
+        if (value === undefined || value === null) return undefined;
+        return value[key];
+      }, object);
+    }
+
+    function normaliseNextCandidate(candidate) {
+      if (!candidate) return '';
+      if (typeof candidate === 'string') return candidate;
+      if (typeof candidate === 'object') return candidate.href || candidate.url || candidate.link || candidate.uri || '';
+      return '';
+    }
+
+    function findNextPageUrl(json) {
+      const overrideValue = normaliseNextCandidate(getByPath(json, els.nextPathInput.value.trim()));
+      if (overrideValue) return overrideValue;
+
+      const commonPaths = [
+        'responseInfo.nextPage.href',
+        'responseInfo.nextPage.url',
+        'responseInfo.nextPage',
+        'nextPage.href',
+        'nextPage.url',
+        'nextPage',
+        'next.href',
+        'next.url',
+        'next',
+        '_links.next.href',
+        'links.next.href'
+      ];
+
+      for (const path of commonPaths) {
+        const value = normaliseNextCandidate(getByPath(json, path));
+        if (value) return value;
+      }
+
+      return deepSearchNext(json);
+    }
+
+    function deepSearchNext(value) {
+      if (!value || typeof value !== 'object') return '';
+      if (Array.isArray(value)) {
+        for (const item of value) {
+          const found = deepSearchNext(item);
+          if (found) return found;
+        }
+        return '';
+      }
+
+      for (const [key, item] of Object.entries(value)) {
+        if (key.toLowerCase().includes('next')) {
+          const candidate = normaliseNextCandidate(item);
+          if (candidate) return candidate;
+        }
+        const found = deepSearchNext(item);
+        if (found) return found;
+      }
+      return '';
+    }
+
+    function resolveUrlPossiblyRelative(candidateUrl, baseUrl) {
+      try {
+        return new URL(candidateUrl, baseUrl).toString();
+      } catch (error) {
+        return candidateUrl;
+      }
+    }
+
+    function getPageNumber(urlValue) {
+      try {
+        const url = new URL(urlValue);
+        const value = url.searchParams.get(els.pageParamInput.value.trim() || 'pageno');
+        return value ? Number(value) : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function buildGeneratedPageUrl(urlValue, advance) {
+      const source = state.lastCalledUrl || urlValue;
+      if (!source) return '';
+      try {
+        const url = new URL(source);
+        const param = els.pageParamInput.value.trim() || 'pageno';
+        const current = getPageNumber(source) || state.generatedPageNumber || 1;
+        const next = current + 1;
+        url.searchParams.set(param, String(next));
+        if (advance) state.generatedPageNumber = next;
+        return url.toString();
+      } catch (error) {
+        return '';
+      }
+    }
+
+    function callNextPage() {
+      if (els.pagingMode.value === 'pageno') {
+        const nextUrl = buildGeneratedPageUrl(state.lastCalledUrl || els.urlInput.value, true);
+        if (!nextUrl) {
+          setStatus('Cannot generate a next page URL. Check the URL and page parameter name.', 'error');
+          return;
+        }
+        state.currentNextUrl = nextUrl;
+        els.urlInput.value = nextUrl;
+        callMaximoUrl(nextUrl, true);
+        return;
+      }
+
+      if (!state.currentNextUrl) return;
+      els.urlInput.value = state.currentNextUrl;
+      callMaximoUrl(state.currentNextUrl, true);
+    }
+
+    function countRecords(json) {
+      if (!json || typeof json !== 'object') return 'Unknown';
+      const candidates = [
+        json.member,
+        json.rdfs_member,
+        json.items,
+        json.data,
+        json.records
+      ];
+      for (const candidate of candidates) {
+        if (Array.isArray(candidate)) return candidate.length;
+      }
+      for (const value of Object.values(json)) {
+        if (Array.isArray(value)) return value.length;
+      }
+      return 'Unknown';
+    }
+
+    function diagnoseMaximoJson(json) {
+      const error = json && json.Error;
+      const code = error && error.reasonCode;
+      const message = error && error.message;
+      if (code === 'BMXAA9510E' || (message && message.includes('stable page resource'))) {
+        return {
+          title: 'Stable page resource expired or reused',
+          body: 'Maximo returned BMXAA9510E. Start again from the original first-page URL, click next immediately and sequentially, or switch to generated pageno mode if your test does not need Maximo stable paging.'
+        };
+      }
+      if (error && message) {
+        return {
+          title: 'Maximo returned an application error',
+          body: code ? code + ': ' + message : message
+        };
+      }
+      return null;
+    }
+
+    function getFetchFailureHelp(error) {
+      if (window.location.protocol === 'file:') {
+        return 'The page is loaded from file://, which produces origin "null". Run a local server such as py -m http.server 8080 and allow http://localhost:8080 in Maximo CORS settings.';
+      }
+      if (error && error.message && error.message.toLowerCase().includes('failed to fetch')) {
+        return 'Common causes are CORS policy, VPN/network access, a blocked preflight request, missing Maximo login cookies, or an invalid auth header. Your current origin is ' + window.location.origin + '.';
+      }
+      return 'Check CORS, Maximo login state, VPN access, certificate trust, and auth headers.';
+    }
+
+    function clearDiagnostics() {
+      els.diagnostics.querySelectorAll('.diagnostic:not([data-transient])').forEach(item => item.remove());
+    }
+
+    function addDiagnostic(title, body) {
+      const item = document.createElement('div');
+      item.className = 'diagnostic';
+      item.innerHTML = '<strong></strong><span></span>';
+      item.querySelector('strong').textContent = title;
+      item.querySelector('span').textContent = body;
+      els.diagnostics.appendChild(item);
+    }
+
+    function addHistory(url, status, nextInfo) {
+      if (state.requestCount === 1) els.history.innerHTML = '';
+      const item = document.createElement('div');
+      item.className = 'history-item';
+
+      const top = document.createElement('div');
+      top.className = 'history-item__top';
+      const countPill = document.createElement('span');
+      countPill.className = 'pill';
+      countPill.textContent = 'Request #' + state.requestCount;
+      const statusPill = document.createElement('span');
+      statusPill.className = 'pill';
+      statusPill.textContent = 'HTTP ' + status;
+      top.append(countPill, statusPill);
+
+      const urlCode = document.createElement('code');
+      urlCode.textContent = url;
+      const nextCode = document.createElement('code');
+      nextCode.textContent = 'Next: ' + nextInfo;
+      item.append(top, urlCode, nextCode);
+      els.history.prepend(item);
+    }
+
+    function buildCurlCommand(url) {
+      if (!url) return '';
+      const headers = buildHeaders();
+      const parts = ['curl', '-i', '-X', 'GET'];
+      for (const [key, value] of Object.entries(headers)) {
+        parts.push('-H', quoteShell(key + ': ' + value));
+      }
+      parts.push(quoteShell(url));
+      return parts.join(' ');
+    }
+
+    function quoteShell(value) {
+      return "'" + String(value).replaceAll("'", "'\\''") + "'";
+    }
+
+    async function copyText(text, message) {
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus(message, 'ok');
+      } catch (error) {
+        setStatus('Clipboard copy failed: ' + error.message, 'error');
+      }
+    }
+
+    function downloadJson() {
+      if (!state.lastResponseText) return;
+      const blob = new Blob([state.lastResponseText], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'maximo-response-' + new Date().toISOString().replaceAll(':', '-') + '.json';
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function clearAll() {
+      state.currentNextUrl = '';
+      state.lastCalledUrl = '';
+      state.lastResponseText = '';
+      state.lastJson = null;
+      state.requestCount = 0;
+      state.generatedPageNumber = null;
+      els.responseOutput.textContent = 'No response yet.';
+      els.lastUrl.textContent = 'No request yet.';
+      els.nextUrl.textContent = 'No next page detected yet.';
+      els.httpStatus.textContent = 'No request yet.';
+      els.elapsedTime.textContent = 'No request yet.';
+      els.pageCounter.textContent = '0';
+      els.recordCount.textContent = 'Unknown';
+      els.history.textContent = 'No requests yet.';
+      clearDiagnostics();
+      setStatus('Cleared. Paste a Maximo GET URL and click Call URL.', 'warn');
+      setBusy(false);
+    }
+  </script>
+</body>
+</html>
