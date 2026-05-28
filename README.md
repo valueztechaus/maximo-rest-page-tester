@@ -1,12 +1,12 @@
 # Maximo REST Page Tester
 
-Valueztech branded, browser-based tester for IBM Maximo REST / OSLC pagination.
+Valueztech branded, browser-based tester for IBM Maximo REST pagination.
 
 This project is a static HTML solution. It can be downloaded, hosted on any basic static host, or run locally without a build step.
 
 ## What It Does
 
-- Calls a Maximo REST / OSLC GET URL from the browser.
+- Calls a Maximo REST API GET URL from the browser.
 - Shows HTTP status, elapsed time, detected record count, response JSON, current URL, next URL, and request history.
 - Supports common Maximo auth header patterns, with browser guidance for CORS-sensitive headers.
 - Supports two pagination strategies:
@@ -21,7 +21,19 @@ Open `index.html` from a web server, then paste a Maximo GET URL.
 Example Maximo URL with API key as a query parameter:
 
 ```text
-https://your-maximo-host/maximo/api/os/MXAPIASSET?lean=1&oslc.pageSize=100&pageno=1&apikey=YOUR_API_KEY
+https://<domain-name-mas-url>/maximo/api/os/<OSNAME>?lean=1&oslc.pageSize=100&pageno=1&apikey=YOUR_API_KEY
+```
+
+Use the Maximo REST API context:
+
+```text
+https://<domain-name-mas-url>/maximo/api/os/<OSNAME>
+```
+
+Do not use the older OSLC context for this tester:
+
+```text
+https://<domain-name-mas-url>/maximo/oslc/os/<OSNAME>
 ```
 
 For browser-based use, pass the API key as `?apikey=...` in the URL and keep **Auth header mode** set to `None`.
@@ -50,22 +62,30 @@ Then run:
 
 ```powershell
 cd C:\Users\your-user\Downloads\MaximoRestAPITester
-py -m http.server 8080
+py -m http.server 8765
 ```
 
 Open:
 
 ```text
-http://localhost:8080/
+http://localhost:8765/
 ```
 
 This changes the browser origin from `null` to:
 
 ```text
-http://localhost:8080
+http://localhost:8765
 ```
 
 Maximo still needs to allow that origin. A local server fixes the `file://` origin problem, but it does not bypass CORS.
+
+Update the Maximo system property `mxe.oslc.aclalloworigin` to include the local server URL:
+
+```text
+http://localhost:8765
+```
+
+If you host the tester somewhere else, add that hosted origin instead.
 
 ## Free Static Hosting Options
 
@@ -83,6 +103,7 @@ For hosted deployments, Maximo must allow the deployed origin, for example:
 https://your-github-user.github.io
 https://your-project.pages.dev
 http://localhost:8080
+http://localhost:8765
 ```
 
 ## CORS Guidance
@@ -92,10 +113,14 @@ If the browser blocks the request before Maximo returns JSON, it is usually CORS
 For direct browser calls, ask the Maximo environment owner to allow the tester origin:
 
 ```text
-Access-Control-Allow-Origin: http://localhost:8080
+mxe.oslc.aclalloworigin=http://localhost:8765
 ```
 
-Use the actual origin where the tester is hosted.
+Use the actual origin where the tester is hosted. For example, if you run the local server on port `8765`, Maximo must allow:
+
+```text
+http://localhost:8765
+```
 
 If you want to use API keys from this browser tester, pass them in the URL:
 
