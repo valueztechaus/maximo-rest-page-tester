@@ -4,6 +4,10 @@ Valueztech branded, browser-based tester for IBM Maximo REST pagination.
 
 This project is a static HTML solution. It can be downloaded, hosted on any basic static host, or run locally without a build step.
 
+## Screenshot
+
+![Valueztech Maximo REST Page Tester](docs/images/maximo-rest-page-tester.png)
+
 ## What It Does
 
 - Calls a Maximo REST API GET URL from the browser.
